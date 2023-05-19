@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { VFC, memo } from 'react';
+import Icon from './icon';
 type Props = {
   handleRequest: any;
   loading: boolean;
@@ -21,7 +22,7 @@ export const SearchButton: VFC<Props> = memo((props) => {
             color: 'red.200',
           }}
         >
-          検索{' '}
+          <Icon name="検索" />{' '}
         </Button>
       ) : inputValue !== '' ? (
         <Button
@@ -37,7 +38,7 @@ export const SearchButton: VFC<Props> = memo((props) => {
             handleRequest();
           }}
         >
-          検索{' '}
+          <Icon name="検索" />{' '}
         </Button>
       ) : (
         <Button
@@ -48,7 +49,7 @@ export const SearchButton: VFC<Props> = memo((props) => {
             opacity: 1,
           }}
         >
-          検索{' '}
+          <Icon name="検索" />{' '}
         </Button>
       )}
     </>
