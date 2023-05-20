@@ -25,7 +25,7 @@ export const RepoModal: VFC<Props> = memo((props) => {
   console.log('repoData', repoData[0]);
 
   const toGitHub = () => {
-    window.location.href = repoData[0].clone_url;
+    window.open(repoData[0].clone_url, '_blank');
   };
 
   return (
