@@ -1,89 +1,44 @@
 import React, { useState } from 'react';
 import './App.css';
-import axios from 'axios';
-import { ChakraProvider, useDisclosure, Box } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  useDisclosure,
+  Box,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
+} from '@chakra-ui/react';
+
+import Icon from './conponent/icon';
 import { RepoModal } from './conponent/repoModal';
 import { TextInput } from './conponent/text';
 import { SearchButton } from './conponent/searchButton';
 import { SearchResult } from './conponent/searchResult';
 import theme from './theme';
-
-type String = string;
-
-type GitHubData = {
-  id: number;
-  full_name: string;
-  owner: [];
-  language: string;
-  stargazers_count: number;
-  watchers_count: number;
-  forks_count: number;
-  open_issues_count: number;
-};
-
-type Loading = boolean;
+import { Method } from './method/method';
 
 function App() {
-  const [inputValue, setInputValue] = useState<String | undefined>('');
-  const [gitHubData, setGitHubData] = useState<GitHubData[] | undefined>(
-    undefined
-  );
+  const {
+    loading,
+    gitHubData,
+    textChange,
+    downEnter,
+    inputValue,
+    handleRequest,
+    handleData,
+    repoData,
+    isOpen,
+    onClose,
+  } = Method();
 
-  console.log('TextInput', TextInput);
-
-  const [repoData, setRepoData] = useState<GitHubData[] | undefined>(undefined);
-  const [loading, setLoading] = useState<Loading>(false);
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const textChange = (e: any) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleRequest = () => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.github.com/search/repositories?q=${inputValue}+in:name&sort=stars`
-      )
-      .then((res) => {
-        setGitHubData(res.data.items);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-  };
-
-  const handleData = (data: GitHubData) => {
-    const updataGitHunData: GitHubData[] = [data];
-    setRepoData(updataGitHunData);
-    onOpen();
-  };
-
-  const downEnter = (e: any) => {
-    if (inputValue === '') {
-      return;
-    }
-    if (e.key === 'Enter') {
-      setLoading(true);
-      axios
-        .get(
-          `https://api.github.com/search/repositories?q=${inputValue}+in:name&sort=stars`
-        )
-        .then((res) => {
-          setGitHubData(res.data.items);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-        });
-    }
-  };
-
-  console.log('gitHubData', gitHubData);
+  //フィルター機能
+  //言語
+  //star
+  //issue数
+  //watcher
+  //fork
 
   return (
     <ChakraProvider theme={theme}>
@@ -98,10 +53,26 @@ function App() {
             <SearchButton
               handleRequest={handleRequest}
               loading={loading}
-              inputValue={inputValue}
+              inputValue={inputValue as string}
             />
           </Box>
         </Box>
+        <Menu>
+          <MenuButton
+            pr={'10px'}
+            as={Button}
+            rightIcon={<Icon name="下矢印" />}
+          >
+            Actions
+          </MenuButton>
+          <MenuList>
+            <MenuItem>Download</MenuItem>
+            <MenuItem>Create a Copy</MenuItem>
+            <MenuItem>Mark as Draft</MenuItem>
+            <MenuItem>Delete</MenuItem>
+            <MenuItem>Attend a Workshop</MenuItem>
+          </MenuList>
+        </Menu>
 
         <SearchResult gitHubData={gitHubData} handleData={handleData} />
 
