@@ -4,7 +4,7 @@ import Icon from './icon';
 type Props = {
   handleRequest: any;
   loading: boolean;
-  inputValue: string | undefined;
+  inputValue: string;
 };
 
 export const SearchButton: VFC<Props> = memo((props) => {
